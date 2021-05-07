@@ -1,3 +1,4 @@
+const faker = require("faker");
 const sut = require("./index"); //sut= system under test(테스트 대상 시스템)
 
 
@@ -45,11 +46,52 @@ test('sut transforms"hello    world" to "hello world"',()=>{
 //테스트 케이스(Parameterized Test)
 
 test.each`
-source              | expected
-${"hello  world"}   | ${"hello world"}
-${"hello   world"}  | ${"hello world"}
-${"hello    world"} | ${"hello world"}
-`('sut transforms "$source" to "$expected"', ({source, expected }) => { //{source, expected}은 테이블 로우가 제공해주는 데이터 입력
+source                 | expected
+${"hello  world"}      | ${"hello world"}
+${"hello   world"}     | ${"hello world"}
+${"hello    world"}    | ${"hello world"}
+${"hello     world"}   | ${"hello world"}
+${"hello      world"}  | ${"hello world"}
+${"hello       world"} | ${"hello world"}
+`('sut transforms "$source" to "$expected"', ({ source, expected }) => { //{source, expected}은 테이블 로우가 제공해주는 데이터 입력
     const actual = sut(source);
     expect(actual).toBe(expected);
+});
+
+test.each`
+source | expected
+${"hello\t world"} | ${"hello world"}
+${"hello \tworld"} | ${"hello world"}
+` ('sut transforms "$source" that contains tab character to "$expected"',
+    ({ source, expected }) => {
+        const actual = sut(source);
+        expect(actual).toBe(expected);
+    }
+);
+
+test.each`
+source              | bannedWords              | expected
+${"hello mockist"} | ${["mockist", "purist"]} | ${"hello *******"}
+${"hello purist"}  | ${["mockist", "purist"]} | ${"hello ******"}
+`(
+    'sut transforms "$source" to "$expected"',
+    ({ source, bannedWords, expected }) => {
+        const actual = sut(source, {bannedWords});
+        expect(actual).toBe(expected);
+    }
+);
+
+
+//랜덤으로 테스트 값을 주기위해 faker패키지 설치
+//const faker = require("faker"); 추가
+
+describe('given banned word', ()=>{
+    const bannedWord = faker.lorem.word(); //랜덤
+    const source = "hello " + bannedWord;//bannedWord를 포함하도록
+    const expected = "hello " + "*".repeat(bannedWord.length); // *을 반복한다. 언제까지? bannedWored의 길이만큼
+
+    test(`${bannedWord} when invoke sut then it return ${expected}`,()=>{
+        const actual = sut(source,{bannedWords: [bannedWord]});
+        expect(actual).toBe(expected);
+    });
 });
