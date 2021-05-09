@@ -44,7 +44,7 @@ test('sut transforms"hello    world" to "hello world"',()=>{
 
 
 //테스트 케이스(Parameterized Test)
-
+//---------------------------------------------------------------------------//
 test.each`
 source                 | expected
 ${"hello  world"}      | ${"hello world"}
@@ -57,7 +57,11 @@ ${"hello       world"} | ${"hello world"}
     const actual = sut(source);
     expect(actual).toBe(expected);
 });
+//---------------------------------------------------------------------------//
 
+
+//tab일때, 테스트 케이스
+//---------------------------------------------------------------------------//
 test.each`
 source | expected
 ${"hello\t world"} | ${"hello world"}
@@ -68,9 +72,13 @@ ${"hello \tworld"} | ${"hello world"}
         expect(actual).toBe(expected);
     }
 );
+//---------------------------------------------------------------------------//
 
+
+//문자열 마스킹, 테스트 케이스
+//---------------------------------------------------------------------------//
 test.each`
-source              | bannedWords              | expected
+source             | bannedWords              | expected
 ${"hello mockist"} | ${["mockist", "purist"]} | ${"hello *******"}
 ${"hello purist"}  | ${["mockist", "purist"]} | ${"hello ******"}
 `(
@@ -80,11 +88,13 @@ ${"hello purist"}  | ${["mockist", "purist"]} | ${"hello ******"}
         expect(actual).toBe(expected);
     }
 );
+//---------------------------------------------------------------------------//
+
 
 
 //랜덤으로 테스트 값을 주기위해 faker패키지 설치
 //const faker = require("faker"); 추가
-
+//---------------------------------------------------------------------------//
 describe('given banned word', ()=>{
     const bannedWord = faker.lorem.word(); //랜덤
     const source = "hello " + bannedWord;//bannedWord를 포함하도록
@@ -95,3 +105,4 @@ describe('given banned word', ()=>{
         expect(actual).toBe(expected);
     });
 });
+//---------------------------------------------------------------------------//

@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ppas1\\Variance\\Variance.csproj",
+      "projectUniqueName": "D:\\TDD\\Variance\\Variance.csproj",
       "projectName": "Variance",
-      "projectPath": "C:\\Users\\ppas1\\Variance\\Variance.csproj",
+      "projectPath": "D:\\TDD\\Variance\\Variance.csproj",
       "packagesPath": "C:\\Users\\ppas1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ppas1\\Variance\\obj\\",
+      "outputPath": "D:\\TDD\\Variance\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ppas1\\AppData\\Roaming\\NuGet\\NuGet.Config"
