@@ -8,19 +8,48 @@ namespace Variance
     {
         static void Main(string[] args)
         {
-            //Inline tempoary variable
+            //n을 Inline tempoary variable
             //int n = args.Length;
 
+
+
+
+            //if문을 switch문과 입력받는걸로 변환 
+            //--------------------------------------------------------------//
+            /*
             if (args.Length == 0)
             {
                 Console.WriteLine("데이터가 입력되지 않았습니다.");
-                return;
             }
             else if (args.Length == 1)
             {
                 Console.WriteLine("두개 이상의 데이터를 입력하세요.");
-                return;
             }
+            else
+            {
+                //console.WriteLine이 위와 동일 하기 때문에 나머지는 메소드로 변화
+                //--------------------------------------------------------------//
+                double[] source = ParseArguments(args, args.Length);
+                double mean = CalculateMean(args, source);
+                double sumOfSquares = CalculateSumOfSquares(source, mean);
+                double variance = sumOfSquares / (args.Length - 1);
+                string output = $"분산 : {variance}";
+                //--------------------------------------------------------------//
+
+                //output을 Inline tempoary variable
+                //string output = GetVarianceOutput(args);
+                Console.WriteLine(GetVarianceOutput(args));
+            }
+            */
+            //--------------------------------------------------------------//
+            //if->switch
+            Console.WriteLine(args.Length switch
+            {
+                0 => "데이터가 입력되지 않았습니다.",
+                1 => "두개 이상의 데이터를 입력하세요.",
+                _ => GetVarianceOutput(args)
+            });
+
 
 
             //문자열 데이터를 숫자 데이터로 변환하는 코드 추출
@@ -32,8 +61,8 @@ namespace Variance
             }*/
 
 
-            //위 코드(25~28줄)의 메소드 추출
-            double[] source = ParseArguments(args, args.Length);
+            //위 코드(25~28줄)의 메소드 추출(else문으로 이동)
+            //double[] source = ParseArguments(args, args.Length);
             //-------------------------------------------------------//
 
 
@@ -49,8 +78,8 @@ namespace Variance
             double mean = sum / args.Length;*/
 
 
-            //위 코드(42~48줄)의 메소드 추출
-            double mean = CalculateMean(args, source);
+            //위 코드(42~48줄)의 메소드 추출(else문으로 이동)
+            //double mean = CalculateMean(args, source);
             //-------------------------------------------------------//
 
 
@@ -64,13 +93,24 @@ namespace Variance
                 sumOfSquares += (source[i] - mean) * (source[i] - mean);
             }*/
 
-            //위 코드(61~65줄)의 메소드 추출
-            double sumOfSquares = CalculateSumOfSquares(source, mean);
+            //위 코드(61~65줄)의 메소드 추출(else문으로 이동)
+            //double sumOfSquares = CalculateSumOfSquares(source, mean);
             //-------------------------------------------------------//
 
-            double variance = sumOfSquares / (args.Length - 1);
 
-            Console.WriteLine($"분산 : {variance}");
+            //(else문으로 이동)
+            //double variance = sumOfSquares / (args.Length - 1);
+            //Console.WriteLine($"분산 : {variance}");
+        }
+
+        private static string GetVarianceOutput(string[] args)
+        {
+            double[] source = ParseArguments(args, args.Length);
+            double mean = CalculateMean(args, source);
+            double sumOfSquares = CalculateSumOfSquares(source, mean);
+            double variance = sumOfSquares / (args.Length - 1);
+            //output을 Inline tempoary variable
+            return $"분산 : {variance}";
         }
 
         //계산식은 추출된 메소드로 이동되었고, main은 간단해졌다.
