@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 //분산 통계량 계산
 //조건:  샘플 데이터 : 1 2 3 4 5 6
 //--------------------------------------------------------------//
@@ -6,8 +7,8 @@ namespace Variance
 {
     class Program
     {
-        static void Main(string[] args)
-        {
+        //static void Main(string[] args)       //71번째줄로 이동
+        //{
             //n을 Inline tempoary variable
             //int n = args.Length;
 
@@ -42,13 +43,30 @@ namespace Variance
             }
             */
             //--------------------------------------------------------------//
+
+
+            //--------------------------------------------------------------//
             //if->switch
+            /*
             Console.WriteLine(args.Length switch
             {
                 0 => "데이터가 입력되지 않았습니다.",
                 1 => "두개 이상의 데이터를 입력하세요.",
                 _ => GetVarianceOutput(args)
             });
+            */
+            //--------------------------------------------------------------//
+
+
+
+            //use expression body for methods를 해서 main과 합치기
+        static void Main(string[] args) => Console.WriteLine(args.Length switch
+            {
+                0 => "데이터가 입력되지 않았습니다.",
+                1 => "두개 이상의 데이터를 입력하세요.",
+                _ => GetVarianceOutput(args)
+            });
+        
 
 
 
@@ -101,11 +119,11 @@ namespace Variance
             //(else문으로 이동)
             //double variance = sumOfSquares / (args.Length - 1);
             //Console.WriteLine($"분산 : {variance}");
-        }
+        //}
 
         private static string GetVarianceOutput(string[] args)
         {
-            double[] source = ParseArguments(args, args.Length);
+            double[] source = ParseArguments(args); //158번째에서 매개변수를 하나만 썼기 때문에 args.Length 삭제.
             double mean = CalculateMean(args, source);
             double sumOfSquares = CalculateSumOfSquares(source, mean);
             double variance = sumOfSquares / (args.Length - 1);
@@ -136,19 +154,37 @@ namespace Variance
             double mean = sum / args.Length;
             return mean;
         }
+        //--------------------------------------------------------------//
+        // private static double[] ParseArguments(string[] args) //링크를 사용하기 때문에 두번째 파라미터도 안쓴다. (int n)
+        // {
+        //     //for를 링크로 전환하여 사용하여 파싱하기
+        //     //--------------------------------------------------------------//
+        //     return args.Select(double.Parse).ToArray();  
+            
+        //     // double[] source = new double[n];
+        //     // for (int i = 0; i < n; i++)
+        //     // {
+        //     //     source[i] = double.Parse(args[i]);
+        //     // }
 
-        private static double[] ParseArguments(string[] args, int n)
-        {
-            double[] source = new double[n];
-            for (int i = 0; i < n; i++)
-            {
-                source[i] = double.Parse(args[i]);
-            }
+        //     // return source;
+        //     //--------------------------------------------------------------//
+        // }
 
-            return source;
-        }
+        //해당 블럭을 use expression body for methods
+        private static double[] ParseArguments(string[] args) 
+        => args.Select(double.Parse).ToArray();
+        //--------------------------------------------------------------//
     }
 }
 //--------------------------------------------------------------//
 //실행은 .net을 써야 하므로 터미널에서 
 //dotnet run 1 2 3 4 5 6  <<<<<<입력.
+
+
+//알아야 할것.
+//----------------------------------//
+//use expression body for methods 단축키.
+
+//강의 진도.
+//17:15분 부터이어서 시청해야한다.
