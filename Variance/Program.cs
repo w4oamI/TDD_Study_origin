@@ -123,7 +123,7 @@ namespace Variance
 
         private static string GetVarianceOutput(string[] args)
         {
-            double[] source = ParseArguments(args); //158번째에서 매개변수를 하나만 썼기 때문에 args.Length 삭제.
+            double[] source = ParseArguments(args); //ParseArguments에서 매개변수를 하나만 썼기 때문에 args.Length 삭제.
             double mean = CalculateMean(args, source);
             double sumOfSquares = CalculateSumOfSquares(source, mean);
             double variance = sumOfSquares / (args.Length - 1);
@@ -143,17 +143,20 @@ namespace Variance
             return sumOfSquares;
         }
 
-        private static double CalculateMean(string[] args, double[] source)
-        {
-            double sum = 0.0;
-            for (int i = 0; i < args.Length; i++)
-            {
-                sum += source[i];
-            }
-
-            double mean = sum / args.Length;
-            return mean;
-        }
+        private static double CalculateMean(string[] args, double[] source) => source.Average();
+        //{
+            //밑에 코드를 없애기 위해 한줄로 만들었다. 그리고 expressio을 적용
+            //return source.Average();
+            // double sum = 0.0;
+            // for (int i = 0; i < args.Length; i++)
+            // {
+            //     sum += source[i];
+            // }
+            // //mean을 인라인
+            // //double mean = sum / args.Length;
+            // //return mean;
+            // return sum / args.Length;
+        //}
         //--------------------------------------------------------------//
         // private static double[] ParseArguments(string[] args) //링크를 사용하기 때문에 두번째 파라미터도 안쓴다. (int n)
         // {
@@ -184,7 +187,47 @@ namespace Variance
 
 //알아야 할것.
 //----------------------------------//
-//use expression body for methods 단축키.
+//use expression body for methods 단축키 -> 컨트롤+. 누르거나 옆에 노란 전구를 누르면 된다.
 
-//강의 진도.
-//17:15분 부터이어서 시청해야한다.
+
+
+//위의 코드의 주석을 제거하면 전보다 코드의 양이 많이 줄었다.
+//-----------------------------------------------------------------------------//
+namespace Variance
+{
+    class Program
+    {
+        static void Main(string[] args) => Console.WriteLine(args.Length switch
+            {
+                0 => "데이터가 입력되지 않았습니다.",
+                1 => "두개 이상의 데이터를 입력하세요.",
+                _ => GetVarianceOutput(args)
+            });
+
+            private static string GetVarianceOutput(string[] args)
+        {
+            double[] source = ParseArguments(args);
+            double mean = CalculateMean(args, source);
+            double sumOfSquares = CalculateSumOfSquares(source, mean);
+            double variance = sumOfSquares / (args.Length - 1);
+
+            return $"분산 : {variance}";
+        }
+
+        private static double CalculateSumOfSquares(double[] source, double mean)
+        {
+            double sumOfSquares = 0.0;
+            for (int i = 0; i < source.Length; i++)
+            {
+                sumOfSquares += (source[i] - mean) * (source[i] - mean);
+            }
+
+            return sumOfSquares;
+        }
+
+        private static double CalculateMean(string[] args, double[] source) => source.Average();
+        private static double[] ParseArguments(string[] args) 
+        => args.Select(double.Parse).ToArray();
+    }
+}
+//-----------------------------------------------------------------------------//
